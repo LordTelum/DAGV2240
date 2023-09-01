@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b4031a568aa4984abfb9bababbe0a3, type: 3}
   m_Name: DoubleJumpAbility
   m_EditorClassIdentifier: 
-  hasDoubleJump: 0
+  hasDoubleJump: 1
