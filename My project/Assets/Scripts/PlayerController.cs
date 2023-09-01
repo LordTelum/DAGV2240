@@ -13,7 +13,9 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private Vector3 velocity;
     private bool isGrounded;
-    private int availableJumps; // Track the remaining jumps
+    private int availableJumps;
+
+    public DoubleJumpAbility doubleJumpAbility; // Reference to the DoubleJumpAbility scriptable object
 
     private void Awake()
     {
@@ -22,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        availableJumps = 2; // Initialize available jumps to 2 (double jump)
+        availableJumps = doubleJumpAbility.hasDoubleJump ? 2 : 1; // Set available jumps based on ability
     }
 
     private void Update()
@@ -42,23 +44,14 @@ public class PlayerController : MonoBehaviour
         else
         {
             velocity.y = 0;
-
-            // Reset available jumps when grounded
-            availableJumps = 2;
+            availableJumps = doubleJumpAbility.hasDoubleJump ? 2 : 1; // Reset jumps when grounded
         }
 
         // Jumping
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && availableJumps > 0)
         {
-            if (isGrounded || availableJumps > 0)
-            {
-                if (!isGrounded)
-                {
-                    availableJumps--; // Decrement available jumps if double jumping
-                }
-
-                velocity.y = Mathf.Sqrt(jumpForce * -2 * gravity);
-            }
+            velocity.y = Mathf.Sqrt(jumpForce * -2 * gravity);
+            availableJumps--;
         }
 
         // Apply movement and gravity
